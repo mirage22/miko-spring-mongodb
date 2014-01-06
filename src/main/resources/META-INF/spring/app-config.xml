@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="
+                    http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans.xsd
+                    http://www.springframework.org/schema/mvc
+                    http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		            http://www.springframework.org/schema/tx
+		            http://www.springframework.org/schema/tx/spring-tx.xsd
+		            http://www.springframework.org/schema/context
+		            http://www.springframework.org/schema/context/spring-context.xsd
+		            http://www.springframework.org/schema/data/jpa
+		            http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+		            http://www.springframework.org/schema/data/mongo
+                    http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+
+    <!--  Traditional configuration using XML only.  Set "xml" profile in web.xml -->
+    <mvc:annotation-driven content-negotiation-manager="cnManager"/>
+
+    <!-- Configures a handler for serving static resources by forwarding to
+        the Servlet container's default Servlet. -->
+    <mvc:default-servlet-handler />
+
+    <!-- Simple strategy: only path extension is taken into account -->
+    <bean id="cnManager"
+          class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="ignoreAcceptHeader" value="true" />
+        <property name="defaultContentType" value="text/html" />
+
+        <property name="mediaTypes">
+            <map>
+                <entry key="html" value="text/html" />
+                <entry key="json" value="application/json" />
+                <entry key="xml" value="application/xml" />
+            </map>
+        </property>
+    </bean>
+
+    <!-- Beans -->
+    <bean id="entityAService" class="com.miko.demo.mongo.service.EntityAServiceImpl" />
+    <bean id="entityCService" class="com.miko.demo.mongo.service.EntityCServiceImpl" />
+    <bean id="redisService" class="com.miko.demo.mongo.service.RedisServiceImp" />
+
+    <!--<jpa:repositories base-package="com.miko.demo.mongo.repository" />-->
+    <!--<mongo:repositories base-package="com.miko.demo" />-->
+
+    <!-- Import MongoDB Setup -->
+    <import resource="classpath:/datasource/mongodb-config.xml"/>
+
+    <!-- Import PostgreSQL Database setup -->
+    <!--<import resource="classpath:/datasource/postgresql-config.xml" />-->
+
+    <!-- Import Redis Client setup -->
+    <import resource="classpath:/datasource/redis-config.xml" />
+
+    <!--<bean id="persistenceExceptionTranslationPostProcessor"-->
+          <!--class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />-->
+
+
+
+
+
+</beans>
